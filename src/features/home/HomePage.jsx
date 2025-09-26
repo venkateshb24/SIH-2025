@@ -8,20 +8,41 @@ const HomeContent = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showCount, setShowCount] = useState(9);
+  const [appliedIds, setAppliedIds] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('appliedInternships') || '[]'); } catch { return []; }
+  });
+  const [dismissedIds, setDismissedIds] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('dismissedInternships') || '[]'); } catch { return []; }
+  });
   const navigate = useNavigate();
-  const [userProfile] = useState(null); // or useState(undefined)
+  const [userProfile] = useState(() => {
+    try {
+      const raw = localStorage.getItem('userProfile');
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  });
 
-  // Mock AI recommendations
+  // Mock AI recommendations adapted to user profile
   const aiRecommendations = [
     {
       id: 1,
       title: 'Frontend Developer Intern',
       company: 'TCS Digital',
-      location: 'Chennai, Tamil Nadu',
+      location:
+        userProfile?.preferences?.preferredLocation === 'sameCity' && userProfile?.location
+          ? userProfile.location
+          : 'Chennai, Tamil Nadu',
       duration: '6 months',
       stipend: '₹25,000/month',
       matchScore: 95,
-      matchReasons: ['Matches your JavaScript skills', 'Located in Chennai', 'CS Engineering preferred'],
+      matchReasons: [
+        (userProfile?.skills || []).includes('JavaScript') ? 'Matches your JavaScript skills' : 'Frontend friendly role',
+        userProfile?.location ? `Near ${userProfile.location}` : 'Popular metro location',
+        'CS Engineering preferred'
+      ],
       logo: '🏢',
       deadline: '15',
       tags: ['Web Development', 'JavaScript', 'React']
@@ -30,11 +51,18 @@ const HomeContent = () => {
       id: 2,
       title: 'Software Development Intern',
       company: 'Infosys Mysore',
-      location: 'Mysore, Karnataka',
+      location:
+        userProfile?.preferences?.preferredLocation === 'sameState' && userProfile?.location?.includes(',')
+          ? userProfile.location.split(',')[1].trim() + ', India'
+          : 'Mysore, Karnataka',
       duration: '4 months',
       stipend: '₹20,000/month',
       matchScore: 88,
-      matchReasons: ['Perfect for CS students', 'Web Development focus', 'Great for beginners'],
+      matchReasons: [
+        userProfile?.education ? `Good for ${userProfile.education}` : 'Great for CS students',
+        (userProfile?.interests || []).includes('Web Development') ? 'Web Development focus' : 'Software foundations',
+        'Great for beginners'
+      ],
       logo: '💻',
       deadline: '22',
       tags: ['Software Development', 'Training Program']
@@ -43,14 +71,56 @@ const HomeContent = () => {
       id: 3,
       title: 'UI/UX Developer Intern',
       company: 'Wipro Technologies',
-      location: 'Bangalore, Karnataka',
+      location: userProfile?.preferences?.preferredLocation === 'remote' ? 'Remote, India' : 'Bangalore, Karnataka',
       duration: '5 months',
       stipend: '₹22,000/month',
       matchScore: 82,
-      matchReasons: ['Frontend skills match', 'South India location', 'Growth opportunities'],
+      matchReasons: [
+        (userProfile?.skills || []).some((s) => /ui|design|frontend/i.test(s)) ? 'Frontend skills match' : 'Design-friendly team',
+        userProfile?.preferences?.preferredLocation === 'remote' ? 'Remote friendly' : 'South India location',
+        'Growth opportunities'
+      ],
       logo: '🎨',
       deadline: '18',
       tags: ['UI/UX', 'Frontend', 'Design']
+    },
+    {
+      id: 7,
+      title: 'Data Science Intern',
+      company: 'Flipkart',
+      location:
+        userProfile?.preferences?.preferredLocation === 'anywhere'
+          ? 'India (Multiple locations)'
+          : 'Bengaluru, Karnataka',
+      duration: '6 months',
+      stipend: '₹30,000/month',
+      matchScore: 84,
+      matchReasons: [
+        (userProfile?.skills || []).some((s) => /python|sql|excel|data/i.test(s)) ? 'Your data skills fit' : 'Beginner-friendly data role',
+        'Top e-commerce brand'
+      ],
+      logo: '🧠',
+      deadline: '20',
+      tags: ['Data Science', 'Python', 'SQL']
+    },
+    {
+      id: 8,
+      title: 'HR Operations Intern',
+      company: 'HDFC Bank',
+      location:
+        userProfile?.preferences?.preferredLocation === 'sameCity' && userProfile?.location
+          ? userProfile.location
+          : 'Mumbai, Maharashtra',
+      duration: '3 months',
+      stipend: '₹12,000/month',
+      matchScore: 76,
+      matchReasons: [
+        (userProfile?.interests || []).includes('Human Resources') ? 'Matches HR interest' : 'Great intro to HR',
+        'Banking sector exposure'
+      ],
+      logo: '🏦',
+      deadline: '10',
+      tags: ['HR', 'Operations']
     }
   ];
 
@@ -63,7 +133,62 @@ const HomeContent = () => {
     { id: 'data', name: t('dataScience'), icon: '📊' }
   ];
 
-   return (
+  // Explore All internships (25+ items)
+  const allInternships = [
+    { id: 4, title: 'Data Analytics Intern', company: 'HCL Technologies', location: 'Noida, Uttar Pradesh', duration: '3 months', stipend: '₹18,000/month', logo: '📊', deadline: '12', tags: ['Python', 'Excel', 'Analytics'], category: 'data' },
+    { id: 5, title: 'Marketing Intern', company: 'Reliance Industries', location: 'Mumbai, Maharashtra', duration: '4 months', stipend: '₹15,000/month', logo: '📈', deadline: '25', tags: ['Marketing', 'Digital'], category: 'marketing' },
+    { id: 6, title: 'Mechanical Engineer Intern', company: 'Tata Motors', location: 'Pune, Maharashtra', duration: '6 months', stipend: '₹28,000/month', logo: '⚙️', deadline: '8', tags: ['Mechanical', 'Automotive'], category: 'engineering' },
+    { id: 7, title: 'Data Science Intern', company: 'Flipkart', location: 'Bengaluru, Karnataka', duration: '6 months', stipend: '₹30,000/month', logo: '🧠', deadline: '20', tags: ['Data Science', 'Python', 'SQL'], category: 'data' },
+    { id: 8, title: 'HR Operations Intern', company: 'HDFC Bank', location: 'Mumbai, Maharashtra', duration: '3 months', stipend: '₹12,000/month', logo: '🏦', deadline: '10', tags: ['HR', 'Operations'], category: 'marketing' },
+    { id: 9, title: 'Backend Developer Intern', company: 'Zoho Corp', location: 'Chennai, Tamil Nadu', duration: '6 months', stipend: '₹22,000/month', logo: '🧩', deadline: '17', tags: ['Node.js', 'APIs', 'Databases'], category: 'tech' },
+    { id: 10, title: 'Android Developer Intern', company: 'Paytm', location: 'Noida, Uttar Pradesh', duration: '5 months', stipend: '₹25,000/month', logo: '📱', deadline: '14', tags: ['Kotlin', 'Android'], category: 'tech' },
+    { id: 11, title: 'iOS Developer Intern', company: 'Zomato', location: 'Gurugram, Haryana', duration: '5 months', stipend: '₹25,000/month', logo: '🍎', deadline: '21', tags: ['Swift', 'iOS'], category: 'tech' },
+    { id: 12, title: 'Graphic Design Intern', company: 'Byju’s', location: 'Bengaluru, Karnataka', duration: '3 months', stipend: '₹15,000/month', logo: '🎨', deadline: '9', tags: ['Photoshop', 'Illustrator'], category: 'design' },
+    { id: 13, title: 'UI/UX Intern', company: 'Freshworks', location: 'Chennai, Tamil Nadu', duration: '4 months', stipend: '₹20,000/month', logo: '🖌️', deadline: '18', tags: ['Figma', 'UX Research'], category: 'design' },
+    { id: 14, title: 'Civil Engineer Intern', company: 'Larsen & Toubro', location: 'Hyderabad, Telangana', duration: '6 months', stipend: '₹26,000/month', logo: '🏗️', deadline: '11', tags: ['Civil', 'Site'], category: 'engineering' },
+    { id: 15, title: 'Electrical Engineer Intern', company: 'Siemens India', location: 'Nashik, Maharashtra', duration: '6 months', stipend: '₹27,000/month', logo: '🔌', deadline: '19', tags: ['Electrical', 'PLC'], category: 'engineering' },
+    { id: 16, title: 'Social Media Intern', company: 'Mamaearth', location: 'Gurugram, Haryana', duration: '3 months', stipend: '₹12,000/month', logo: '📣', deadline: '16', tags: ['Content', 'Social'], category: 'marketing' },
+    { id: 17, title: 'Digital Marketing Intern', company: 'Tata CLiQ', location: 'Mumbai, Maharashtra', duration: '4 months', stipend: '₹15,000/month', logo: '💡', deadline: '22', tags: ['SEO', 'SEM'], category: 'marketing' },
+    { id: 18, title: 'Business Analyst Intern', company: 'Deloitte India', location: 'Hyderabad, Telangana', duration: '4 months', stipend: '₹30,000/month', logo: '📈', deadline: '27', tags: ['BA', 'Excel', 'SQL'], category: 'data' },
+    { id: 19, title: 'Cloud Engineer Intern', company: 'AWS India', location: 'Bengaluru, Karnataka', duration: '6 months', stipend: '₹35,000/month', logo: '☁️', deadline: '15', tags: ['AWS', 'DevOps'], category: 'tech' },
+    { id: 20, title: 'AI/ML Intern', company: 'TCS Research', location: 'Pune, Maharashtra', duration: '6 months', stipend: '₹32,000/month', logo: '🤖', deadline: '26', tags: ['ML', 'Python', 'NLP'], category: 'data' },
+    { id: 21, title: 'Web Development Intern', company: 'Infosys', location: 'Mysuru, Karnataka', duration: '5 months', stipend: '₹22,000/month', logo: '🕸️', deadline: '13', tags: ['HTML', 'CSS', 'React'], category: 'tech' },
+    { id: 22, title: 'Operations Intern', company: 'Swiggy', location: 'Bengaluru, Karnataka', duration: '3 months', stipend: '₹18,000/month', logo: '🍽️', deadline: '24', tags: ['Ops', 'Excel'], category: 'marketing' },
+    { id: 23, title: 'Product Design Intern', company: 'CRED', location: 'Bengaluru, Karnataka', duration: '4 months', stipend: '₹30,000/month', logo: '🧭', deadline: '17', tags: ['Figma', 'Prototyping'], category: 'design' },
+    { id: 24, title: 'Embedded Systems Intern', company: 'Bosch India', location: 'Coimbatore, Tamil Nadu', duration: '6 months', stipend: '₹28,000/month', logo: '🔧', deadline: '20', tags: ['C', 'Embedded'], category: 'engineering' },
+    { id: 25, title: 'QA Automation Intern', company: 'Mindtree', location: 'Chennai, Tamil Nadu', duration: '4 months', stipend: '₹20,000/month', logo: '🧪', deadline: '29', tags: ['Selenium', 'Cypress'], category: 'tech' },
+    { id: 26, title: 'Data Engineer Intern', company: 'PhonePe', location: 'Bengaluru, Karnataka', duration: '6 months', stipend: '₹32,000/month', logo: '🧱', deadline: '18', tags: ['ETL', 'SQL', 'Python'], category: 'data' },
+    { id: 27, title: 'Content Writer Intern', company: 'The Hindu', location: 'Chennai, Tamil Nadu', duration: '3 months', stipend: '₹10,000/month', logo: '📝', deadline: '7', tags: ['Writing', 'SEO'], category: 'marketing' },
+    { id: 28, title: 'CAD Design Intern', company: 'Hero MotoCorp', location: 'Gurugram, Haryana', duration: '5 months', stipend: '₹24,000/month', logo: '📐', deadline: '12', tags: ['SolidWorks', 'CAD'], category: 'engineering' },
+    { id: 29, title: 'Frontend Intern (Next.js)', company: 'Razorpay', location: 'Bengaluru, Karnataka', duration: '6 months', stipend: '₹35,000/month', logo: '💳', deadline: '21', tags: ['Next.js', 'TypeScript'], category: 'tech' },
+    { id: 30, title: 'Data Visualization Intern', company: 'Zoho Analytics', location: 'Chennai, Tamil Nadu', duration: '4 months', stipend: '₹22,000/month', logo: '📊', deadline: '16', tags: ['Tableau', 'PowerBI'], category: 'data' }
+  ];
+
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const filteredInternships = allInternships.filter((item) => {
+    const matchesCategory = selectedCategory === 'all' ? true : item.category === selectedCategory;
+    if (!normalizedQuery) return matchesCategory;
+    const haystack = `${item.title} ${item.company} ${item.location} ${item.tags.join(' ')}`.toLowerCase();
+    return matchesCategory && haystack.includes(normalizedQuery);
+  });
+
+  const visibleInternships = filteredInternships.slice(0, showCount);
+
+  const markApplied = (id) => {
+    if (appliedIds.includes(id)) return;
+    const next = [...appliedIds, id];
+    setAppliedIds(next);
+    localStorage.setItem('appliedInternships', JSON.stringify(next));
+  };
+
+  const markDismissed = (id) => {
+    if (dismissedIds.includes(id)) return;
+    const next = [...dismissedIds, id];
+    setDismissedIds(next);
+    localStorage.setItem('dismissedInternships', JSON.stringify(next));
+  };
+
+  return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
        <header className="bg-white shadow-sm border-b-4 border-orange-500 sticky top-0 z-40">
@@ -76,10 +201,16 @@ const HomeContent = () => {
               className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold hover:bg-blue-700 transition"
               title={t('settings') || 'Settings'}
             >
-              {/* User/Profile Icon */}
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
+              {(() => {
+                const initial = userProfile?.name?.trim()?.[0]?.toUpperCase();
+                return initial ? (
+                  <span className="text-lg">{initial}</span>
+                ) : (
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                );
+              })()}
             </button>
           </div>
         </header>
@@ -161,9 +292,21 @@ const HomeContent = () => {
           </div>
           {/* Recommended Internships Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            {aiRecommendations.map((internship) => (
-              <InternshipCard key={internship.id} internship={internship} isRecommended={true} />
-            ))}
+            {aiRecommendations
+              .filter((i) => !dismissedIds.includes(i.id))
+              .map((internship) => (
+                <InternshipCard
+                  key={internship.id}
+                  internship={internship}
+                  isRecommended={true}
+                  onApply={(it) => {
+                    try { localStorage.setItem('catalog', JSON.stringify(allInternships)); } catch {}
+                    navigate(`/internship/${it.id}`);
+                  }}
+                  onDismiss={(it) => markDismissed(it.id)}
+                  onOpen={(it) => navigate(`/internship/${it.id}`)}
+                />
+              ))}
           </div>
           {/* Recommendation Actions */}
           <div className="mt-6 text-center">
@@ -184,53 +327,34 @@ const HomeContent = () => {
               6 {t('available')}
             </p>
           </div>
-          {/* Additional Internships */}
+          {/* Additional Internships (filtered) */}
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            <InternshipCard 
-              internship={{
-                id: 4,
-                title: 'Data Analytics Intern',
-                company: 'HCL Technologies',
-                location: 'Noida, Uttar Pradesh',
-                duration: '3 months',
-                stipend: '₹18,000/month',
-                logo: '📊',
-                deadline: '12',
-                tags: ['Data Analytics', 'Python']
-              }} 
-            />
-            <InternshipCard 
-              internship={{
-                id: 5,
-                title: 'Marketing Intern',
-                company: 'Reliance Industries',
-                location: 'Mumbai, Maharashtra',
-                duration: '4 months',
-                stipend: '₹15,000/month',
-                logo: '📈',
-                deadline: '25',
-                tags: ['Marketing', 'Digital']
-              }} 
-            />
-            <InternshipCard 
-              internship={{
-                id: 6,
-                title: 'Mechanical Engineer Intern',
-                company: 'Tata Motors',
-                location: 'Pune, Maharashtra',
-                duration: '6 months',
-                stipend: '₹28,000/month',
-                logo: '⚙️',
-                deadline: '8',
-                tags: ['Mechanical', 'Automotive']
-              }} 
-            />
+            {visibleInternships
+              .filter((i) => !dismissedIds.includes(i.id))
+              .map((internship) => (
+                <InternshipCard
+                  key={internship.id}
+                  internship={internship}
+                  onApply={(it) => {
+                    try { localStorage.setItem('catalog', JSON.stringify(allInternships)); } catch {}
+                    navigate(`/internship/${it.id}`);
+                  }}
+                  onDismiss={(it) => markDismissed(it.id)}
+                  onOpen={(it) => {
+                    // Keep catalog snapshot for details page
+                    try { localStorage.setItem('catalog', JSON.stringify(allInternships)); } catch {}
+                    navigate(`/internship/${it.id}`);
+                  }}
+                />
+              ))}
           </div>
           {/* Load More */}
           <div className="mt-8 text-center">
-            <button className="bg-gray-100 text-gray-700 px-8 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors">
-              {t('loadMore')}
-            </button>
+            {showCount < filteredInternships.length ? (
+              <button onClick={() => setShowCount(filteredInternships.length)} className="bg-gray-100 text-gray-700 px-8 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors">
+                {t('loadMore')}
+              </button>
+            ) : null}
           </div>
         </section>
       </main>

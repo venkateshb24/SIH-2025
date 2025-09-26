@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../../context/TranslationContext';
 import WelcomeSection from './components/WelcomeSection';
-import LanguageGrid from './components/languageGrid';
+import LanguageGrid from './components/LanguageGrid';
 import PageLayout from '../../components/layout/PageLayout';
 
 const LanguageSelectionPage = ({ onLanguageSelected }) => {
+  const navigate = useNavigate();
   const { languages, changeLanguage, t } = useTranslation();
   const [selectedLanguage, setSelectedLanguage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +29,7 @@ const LanguageSelectionPage = ({ onLanguageSelected }) => {
     setTimeout(() => {
       setIsLoading(false);
       if (onLanguageSelected) onLanguageSelected(selectedLanguage);
+      navigate('/welcome');
     }, 500);
   };
 

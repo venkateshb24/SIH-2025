@@ -4,14 +4,22 @@ import { useTranslation } from '../context/TranslationContext';
 const SettingsPage = () => {
   const { t, currentLanguage, changeLanguage, languages } = useTranslation();
 
-  const [profile, setProfile] = useState({
-    name: 'Arjun Kumar',
-    email: 'arjun.kumar@example.com',
-    phone: '+91 98765 43210',
-    location: 'Chennai, Tamil Nadu',
-    education: 'B.Tech Computer Science',
-    skills: ['JavaScript', 'React', 'Python'],
-    interests: ['Web Development', 'AI/ML', 'Mobile Apps']
+  const [profile, setProfile] = useState(() => {
+    try {
+      const raw = localStorage.getItem('userProfile');
+      const fallback = {
+        name: '',
+        email: '',
+        phone: '',
+        location: '',
+        education: '',
+        skills: [],
+        interests: []
+      };
+      return raw ? { ...fallback, ...JSON.parse(raw) } : fallback;
+    } catch {
+      return { name: '', email: '', phone: '', location: '', education: '', skills: [], interests: [] };
+    }
   });
 
   const [preferences, setPreferences] = useState({
@@ -33,7 +41,13 @@ const SettingsPage = () => {
   const [showLanguageModal, setShowLanguageModal] = useState(false);
 
   const handleSave = () => {
-    alert((t('saveChanges') || 'Save Changes') + ' - Settings saved successfully!');
+    try {
+      const merged = { ...profile };
+      localStorage.setItem('userProfile', JSON.stringify(merged));
+      alert((t('saveChanges') || 'Save Changes') + ' - Settings saved successfully!');
+    } catch {
+      alert('Failed to save');
+    }
   };
 
   const handleLogout = () => {
@@ -44,6 +58,7 @@ const SettingsPage = () => {
 
   const settingsSections = [
     { id: 'profile', icon: '👤', label: t('profileSettings') },
+    { id: 'applications', icon: '📂', label: 'Applications' },
     { id: 'language', icon: '🌐', label: t('languagePreference') },
     { id: 'ai', icon: '🎯', label: t('aiPreferences') },
     { id: 'notifications', icon: '🔔', label: t('notifications') },
@@ -134,6 +149,37 @@ const SettingsPage = () => {
             </SettingCard>
           </div>
         );
+
+      case 'applications':
+        {
+          let applied = [];
+          let catalog = [];
+          try { applied = JSON.parse(localStorage.getItem('appliedInternships') || '[]'); } catch {}
+          try { catalog = JSON.parse(localStorage.getItem('catalog') || '[]'); } catch {}
+          const appliedItems = catalog.filter((c) => applied.includes(c.id));
+          return (
+            <div className="space-y-6">
+              <SettingCard title="Applied Internships" description="Track your applications">
+                {appliedItems.length === 0 ? (
+                  <div className="text-gray-500 text-sm">No applications yet.</div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {appliedItems.map((it) => (
+                      <div key={it.id} className="p-4 border rounded-lg flex items-start space-x-3">
+                        <div className="w-10 h-10 rounded bg-gray-100 flex items-center justify-center text-lg">{it.logo || '🏢'}</div>
+                        <div>
+                          <div className="font-medium text-gray-900">{it.title}</div>
+                          <div className="text-sm text-gray-600">{it.company}</div>
+                          <div className="text-xs text-gray-500 mt-1">{it.location}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </SettingCard>
+            </div>
+          );
+        }
 
       case 'language':
         return (

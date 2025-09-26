@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from '../../context/TranslationContext';
 
 const WelcomePage = () => {
+  const navigate = useNavigate();
   const { t, currentLanguage, changeLanguage } = useTranslation();
   const [isStarting, setIsStarting] = useState(false);
 
@@ -12,8 +14,9 @@ const WelcomePage = () => {
     setIsStarting(true);
     setTimeout(() => {
       setIsStarting(false);
-      alert("Redirecting to profile creation page...");
-    }, 1000);
+      // After welcome, proceed to login. Auth flow will route to home or profile setup.
+      navigate('/login');
+    }, 600);
   };
 
   return (

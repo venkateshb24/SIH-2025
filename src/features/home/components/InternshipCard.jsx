@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from '../../../context/TranslationContext';
 
-const InternshipCard = ({ internship, isRecommended = false }) => {
+const InternshipCard = ({ internship, isRecommended = false, onApply, onDismiss, onOpen }) => {
   const { t } = useTranslation();
 
   if (!internship) return null; // Prevent rendering if no data
@@ -63,14 +63,15 @@ const InternshipCard = ({ internship, isRecommended = false }) => {
         </div>
       )}
       <div className={`flex gap-2 ${isRecommended ? 'flex-col sm:flex-row' : ''}`}>
-        <button className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-4 rounded-lg font-medium hover:shadow-lg transition-all duration-300 text-sm">
+        <button onClick={() => onOpen?.(internship)} className="flex-1 bg-white border border-gray-200 text-gray-800 py-3 px-4 rounded-lg font-medium hover:bg-gray-50 transition-all duration-300 text-sm">
+          {t('moreDetails') || 'More Details'}
+        </button>
+        <button onClick={() => onApply?.(internship)} className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-4 rounded-lg font-medium hover:shadow-lg transition-all duration-300 text-sm">
           {t('applyNow')}
         </button>
-        {isRecommended && (
-          <button className="flex-1 bg-gray-100 text-gray-700 py-3 px-4 rounded-lg font-medium hover:bg-gray-200 transition-colors text-sm">
-            {t('notInterested')}
-          </button>
-        )}
+        <button onClick={() => onDismiss?.(internship)} className="flex-1 bg-gray-100 text-gray-700 py-3 px-4 rounded-lg font-medium hover:bg-gray-200 transition-colors text-sm">
+          {t('notInterested')}
+        </button>
       </div>
     </div>
   );

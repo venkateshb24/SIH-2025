@@ -139,6 +139,21 @@ const translations = {
     saveChanges: "Save Changes",
     cancel: "Cancel",
     reset: "Reset to Default"
+    ,
+    // Application form
+    applyTitle: "Application Form",
+    resume: "Resume",
+    uploadResume: "Upload Resume (PDF)",
+    coverLetter: "Cover Letter",
+    submitApplication: "Submit Application",
+    name: "Full Name",
+    email: "Email Address",
+    phone: "Phone Number",
+    location: "Location",
+    education: "Education",
+    skills: "Skills",
+    moreDetails: "More Details",
+    applicationSubmitted: "Application submitted successfully!"
   },
   
   hi: {
@@ -279,7 +294,20 @@ const translations = {
     // सेटिंग्स - क्रियाएं
     saveChanges: "बदलाव सहेजें",
     cancel: "रद्द करें",
-    reset: "डिफ़ॉल्ट पर रीसेट करें"
+    reset: "डिफ़ॉल्ट पर रीसेट करें",
+    applyTitle: "आवेदन फॉर्म",
+    resume: "रिज्यूमे",
+    uploadResume: "रिज्यूमे अपलोड करें (PDF)",
+    coverLetter: "कवर लेटर",
+    submitApplication: "आवेदन जमा करें",
+    name: "पूरा नाम",
+    email: "ईमेल पता",
+    phone: "फोन नंबर",
+    location: "स्थान",
+    education: "शिक्षा",
+    skills: "कौशल",
+    moreDetails: "विवरण",
+    applicationSubmitted: "आवेदन सफलतापूर्वक जमा हुआ!"
   },
   
   ta: {
@@ -351,7 +379,24 @@ const translations = {
         "தனிப்பயன் இன்டர்ன்ஷிப் பரிந்துரைகளைப் பெறுங்கள்",
         "உங்கள் சுயவிவரத்துடன் பொருந்தும் வாய்ப்புகளுக்கு விண்ணப்பிக்கவும்",
         "உங்கள் தொழில்முனைவு பயணத்தைத் தொடங்குங்கள்"
-    ]
+    ],
+    login: "உள்நுழை",
+    register: "பதிவு",
+    profileSetup: "சுயவிவர அமைப்பு",
+    continue: "தொடரவும்",
+    applyTitle: "விண்ணப்ப படிவம்",
+    resume: "ரெஸ்யூம்",
+    uploadResume: "ரெஸ்யூம் பதிவேற்று (PDF)",
+    coverLetter: "கவர் லெட்டர்",
+    submitApplication: "விண்ணப்பத்தை சமர்ப்பிக்கவும்",
+    name: "முழு பெயர்",
+    email: "மின்னஞ்சல் முகவரி",
+    phone: "தொலைபேசி எண்",
+    location: "இடம்",
+    education: "கல்வி",
+    skills: "திறன்கள்",
+    moreDetails: "மேலும் விவரங்கள்",
+    applicationSubmitted: "விண்ணப்பம் வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது!"
   },
   
   te: {
@@ -423,7 +468,24 @@ const translations = {
         "వ్యక్తిగత ఇంటర్న్‌షిప్ సిఫార్సులను పొందండి",
         "మీ ప్రొఫైల్‌కు సరిపడే అవకాశాలకు దరఖాస్తు చేయండి",
         "మీ వృత్తిపరమైన ప్రయాణాన్ని ప్రారంభించండి"
-    ]
+    ],
+    login: "లాగిన్",
+    register: "నమోదు",
+    profileSetup: "ప్రొఫైల్ సెటప్",
+    continue: "కొనసాగించు",
+    applyTitle: "అప్లికేషన్ ఫారం",
+    resume: "రెజ్యూమ్",
+    uploadResume: "రెజ్యూమ్ అప్‌లోడ్ చేయండి (PDF)",
+    coverLetter: "కవర్ లెటర్",
+    submitApplication: "అప్లికేషన్ సమర్పించండి",
+    name: "పూర్తి పేరు",
+    email: "ఈమెయిల్ చిరునామా",
+    phone: "ఫోన్ నంబర్",
+    location: "ప్రాంతం",
+    education: "విద్య",
+    skills: "నైపుణ్యాలు",
+    moreDetails: "మరిన్ని వివరాలు",
+    applicationSubmitted: "అప్లికేషన్ విజయవంతంగా సమర్పించబడింది!"
   },
   
   bn: {
@@ -495,7 +557,24 @@ const translations = {
         "ব্যক্তিগতকৃত ইন্টার্নশিপ সুপারিশ পান",
         "আপনার প্রোফাইলের সাথে মেলে এমন সুযোগগুলিতে আবেদন করুন",
         "আপনার পেশাগত যাত্রা শুরু করুন"
-    ]
+    ],
+    login: "লগইন",
+    register: "রেজিস্টার",
+    profileSetup: "প্রোফাইল সেটআপ",
+    continue: "চালিয়ে যান",
+    applyTitle: "আবেদন ফর্ম",
+    resume: "রেজিউমে",
+    uploadResume: "রেজিউমে আপলোড করুন (PDF)",
+    coverLetter: "কভার লেটার",
+    submitApplication: "আবেদন জমা দিন",
+    name: "পূর্ণ নাম",
+    email: "ইমেইল ঠিকানা",
+    phone: "ফোন নম্বর",
+    location: "অবস্থান",
+    education: "শিক্ষা",
+    skills: "দক্ষতা",
+    moreDetails: "বিস্তারিত",
+    applicationSubmitted: "আবেদন সফলভাবে জমা হয়েছে!"
   },
   
   mr: {
@@ -567,7 +646,24 @@ const translations = {
         "वैयक्तिकृत इंटर्नशिप शिफारसी मिळवा",
         "आपल्या प्रोफाइलशी जुळणाऱ्या संधींसाठी अर्ज करा",
         "आपली व्यावसायिक यात्रा सुरू करा"
-    ]
+    ],
+    login: "लॉगिन",
+    register: "नोंदणी",
+    profileSetup: "प्रोफाइल सेटअप",
+    continue: "सुरू ठेवा",
+    applyTitle: "अर्ज फॉर्म",
+    resume: "रेझ्युमे",
+    uploadResume: "रेझ्युमे अपलोड करा (PDF)",
+    coverLetter: "कव्हर लेटर",
+    submitApplication: "अर्ज सबमिट करा",
+    name: "पूर्ण नाव",
+    email: "ईमेल पत्ता",
+    phone: "फोन नंबर",
+    location: "स्थान",
+    education: "शिक्षण",
+    skills: "कौशल्ये",
+    moreDetails: "अधिक तपशील",
+    applicationSubmitted: "अर्ज यशस्वीरीत्या सबमिट झाला!"
   },
   
   gu: {
@@ -639,7 +735,24 @@ const translations = {
         "વ્યક્તિગત ઇન્ટર્નશિપ ભલામણો મેળવો",
         "તમારા પ્રોફાઇલ સાથે મેળ ખાતી તકો માટે અરજી કરો",
         "તમારી વ્યાવસાયિક સફર શરૂ કરો"
-    ]
+    ],
+    login: "લૉગિન",
+    register: "રજીસ્ટર",
+    profileSetup: "પ્રોફાઇલ સેટઅપ",
+    continue: "ચાલુ રાખો",
+    applyTitle: "અરજી ફોર્મ",
+    resume: "રેઝ્યુમે",
+    uploadResume: "રેઝ્યુમે અપલોડ કરો (PDF)",
+    coverLetter: "કવર લેટર",
+    submitApplication: "અરજી મોકલો",
+    name: "પૂર્ણ નામ",
+    email: "ઈમેઈલ સરનામું",
+    phone: "ફોન નંબર",
+    location: "સ્થાન",
+    education: "શિક્ષણ",
+    skills: "કૌશલ્ય",
+    moreDetails: "વધુ વિગતો",
+    applicationSubmitted: "અરજી સફળતાપૂર્વક મોકલાઈ!"
   },
   
   kn: {
@@ -711,7 +824,24 @@ const translations = {
         "ವೈಯಕ್ತಿಕ ಇಂಟರ್ನ್‌ಶಿಪ್ ಶಿಫಾರಸುಗಳನ್ನು ಪಡೆಯಿರಿ",
         "ನಿಮ್ಮ ಪ್ರೊಫೈಲ್‌ಗೆ ಹೊಂದಿಕೊಳ್ಳುವ ಅವಕಾಶಗಳಿಗೆ ಅರ್ಜಿ ಹಾಕಿ",
         "ನಿಮ್ಮ ವೃತ್ತಿಪರ ಪ್ರಯಾಣವನ್ನು ಪ್ರಾರಂಭಿಸಿ"
-    ]
+    ],
+    login: "ಲಾಗಿನ್",
+    register: "ರಿಜಿಸ್ಟರ್",
+    profileSetup: "ಪ್ರೊಫೈಲ್ ಸೆಟಪ್",
+    continue: "ಮುಂದುವರಿಸಿ",
+    applyTitle: "ಅರ್ಜಿ ಫಾರ್ಮ್",
+    resume: "ರಿಸ್ಯೂಮ್",
+    uploadResume: "ರಿಸ್ಯೂಮ್ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ (PDF)",
+    coverLetter: "ಕವರ್ ಲೆಟರ್",
+    submitApplication: "ಅರ್ಜಿ ಸಲ್ಲಿಸಿ",
+    name: "ಪೂರ್ಣ ಹೆಸರು",
+    email: "ಇಮೇಲ್ ವಿಳಾಸ",
+    phone: "ಫೋನ್ ಸಂಖ್ಯೆ",
+    location: "ಸ್ಥಳ",
+    education: "ಶಿಕ್ಷಣ",
+    skills: "ಕೌಶಲ್ಯಗಳು",
+    moreDetails: "ಹೆಚ್ಚು ಮಾಹಿತಿ",
+    applicationSubmitted: "ಅರ್ಜಿಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಸಲ್ಲಿಸಲಾಗಿದೆ!"
   }
 };
 
